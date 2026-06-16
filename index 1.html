@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marie Lefebvre - Architecte d'Intérieur</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #1a1a1a;
+            --accent: #c9a96e;
+            --light: #f5f5f0;
+            --text: #333;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--primary); font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
+        .mobile-menu { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+        .hero-content h1 { font-size: 4rem; font-weight: 300; margin-bottom: 1rem; letter-spacing: 2px; }
+        .hero-content p { font-size: 1.3rem; margin-bottom: 2rem; font-weight: 300; }
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 0;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            border: 2px solid var(--accent);
+        }
+        .btn:hover { background: transparent; color: var(--accent); }
+
+        /* About */
+        .about {
+            padding: 6rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .about-img {
+            height: 600px;
+            background: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800') center/cover;
+            position: relative;
+        }
+        .about-img::after {
+            content: '';
+            position: absolute;
+            top: 2rem; left: 2rem;
+            width: 100%; height: 100%;
+            border: 2px solid var(--accent);
+            z-index: -1;
+        }
+        .about-content h2 { font-size: 2.5rem; margin-bottom: 1.5rem; color: var(--primary); }
+        .about-content p { margin-bottom: 1.5rem; color: #666; line-height: 1.8; }
+        .stats { display: flex; gap: 3rem; margin-top: 2rem; }
+        .stat h3 { font-size: 2.5rem; color: var(--accent); font-weight: 300; }
+        .stat p { font-size: 0.9rem; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Projects */
+        .projects {
+            padding: 6rem 5%;
+            background: var(--light);
+        }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 { font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem; }
+        .section-header p { color: #999; }
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .project-card {
+            position: relative;
+            overflow: hidden;
+            height: 450px;
+            cursor: pointer;
+        }
+        .project-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .project-card:hover img { transform: scale(1.1); }
+        .project-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        .project-card:hover .project-overlay { transform: translateY(0); }
+        .project-overlay h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .project-overlay span { color: var(--accent); font-size: 0.9rem; }
+
+        /* Services */
+        .services {
+            padding: 6rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        .service-card {
+            padding: 3rem 2rem;
+            text-align: center;
+            border: 1px solid #eee;
+            transition: all 0.3s;
+        }
+        .service-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+        .service-card h3 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--primary); }
+        .service-card p { color: #666; font-size: 0.95rem; }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 6rem 5%;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+        }
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 3rem auto;
+            position: relative;
+        }
+        .testimonial {
+            font-size: 1.3rem;
+            font-style: italic;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        .client-info h4 { color: var(--accent); font-size: 1.1rem; }
+        .client-info p { color: #999; font-size: 0.9rem; }
+
+        /* Contact */
+        .contact {
+            padding: 6rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .contact-info h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .contact-details { margin-top: 2rem; }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .contact-item i { color: var(--accent); font-size: 1.2rem; }
+        .contact-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .form-group textarea { height: 150px; resize: vertical; }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        .social-links a:hover { color: var(--accent); }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .nav-links { display: none; }
+            .mobile-menu { display: block; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .about, .contact { grid-template-columns: 1fr; }
+            .service-grid { grid-template-columns: 1fr; }
+            .stats { flex-direction: column; gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Marie<span>Lefebvre</span></div>
+        <ul class="nav-links">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#apropos">À Propos</a></li>
+            <li><a href="#projets">Projets</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="mobile-menu">☰</div>
+    </nav>
+
+    <section class="hero" id="accueil">
+        <div class="hero-content">
+            <h1>Marie Lefebvre</h1>
+            <p>Architecte d'Intérieur & Designer d'Espaces</p>
+            <a href="#projets" class="btn">Voir Mes Projets</a>
+        </div>
+    </section>
+
+    <section class="about" id="apropos">
+        <div class="about-img"></div>
+        <div class="about-content">
+            <h2>Créer des Espaces qui Racontent Votre Histoire</h2>
+            <p>Depuis plus de 15 ans, je conçois des intérieurs qui allient esthétique et fonctionnalité. Chaque projet est une nouvelle aventure, une opportunité de transformer des espaces en lieux de vie uniques.</p>
+            <p>Mon approche allie créativité, expertise technique et respect des délais. Je crois que chaque détail compte et que l'harmonie naît de la cohérence entre les matériaux, les couleurs et la lumière.</p>
+            <div class="stats">
+                <div class="stat">
+                    <h3>150+</h3>
+                    <p>Projets Réalisés</p>
+                </div>
+                <div class="stat">
+                    <h3>15</h3>
+                    <p>Années d'Expérience</p>
+                </div>
+                <div class="stat">
+                    <h3>98%</h3>
+                    <p>Clients Satisfaits</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="projects" id="projets">
+        <div class="section-header">
+            <h2>Portfolio</h2>
+            <p>Découvrez une sélection de mes réalisations récentes</p>
+        </div>
+        <div class="project-grid">
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600" alt="Projet 1">
+                <div class="project-overlay">
+                    <h3>Loft Contemporain</h3>
+                    <span>Rénovation Complète • Paris</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600" alt="Projet 2">
+                <div class="project-overlay">
+                    <h3>Villa Méditerranéenne</h3>
+                    <span>Architecture Intérieure • Nice</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600" alt="Projet 3">
+                <div class="project-overlay">
+                    <h3>Bureau Moderne</h3>
+                    <span>Design Commercial • Lyon</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://imgs.search.brave.com/muyQW_bq4IaxRHp4e4C98QSvbJ71JlQoyLVbdLmo2hs/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zdGF0/aWMud2l4c3RhdGlj/LmNvbS9tZWRpYS85/NGQzZTdfYmMwMWVm/NzU1ZDNhNDk4Mjkx/Zjk3MDdhYTExYjEy/ZjR-bXYyLmpwZWcv/djEvZml0L3dfNDgw/LGhfNDgwLHFfOTAs/ZW5jX2F2aWYscXVh/bGl0eV9hdXRvLzk0/ZDNlN19iYzAxZWY3/NTVkM2E0OTgyOTFm/OTcwN2FhMTFiMTJm/NH5tdjIuanBlZw" alt="Projet 4">
+                <div class="project-overlay">
+                    <h3>Appartement Haussmannien</h3>
+                    <span>Rénovation • Bordeaux</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=600" alt="Projet 5">
+                <div class="project-overlay">
+                    <h3>Restaurant Étoilé</h3>
+                    <span>Design Hospitality • Marseille</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1600573472550-8090b5e0745e?w=600" alt="Projet 6">
+                <div class="project-overlay">
+                    <h3>Maison Minimaliste</h3>
+                    <span>Construction Neuve • Lille</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="section-header">
+            <h2>Mes Services</h2>
+            <p>Des solutions sur mesure pour chaque projet</p>
+        </div>
+        <div class="service-grid">
+            <div class="service-card">
+                <div class="service-icon">🏠</div>
+                <h3>Architecture Intérieure</h3>
+                <p>Conception complète de vos espaces intérieurs, de la distribution des pièces au choix des matériaux.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎨</div>
+                <h3>Décoration & Design</h3>
+                <p>Sélection de mobilier, couleurs, textiles et accessoires pour créer une ambiance harmonieuse.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📐</div>
+                <h3>Rénovation & Aménagement</h3>
+                <p>Accompagnement complet dans la rénovation de votre bien, du permis de construire à la livraison.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="section-header">
+            <h2 style="color: white;">Témoignages</h2>
+        </div>
+        <div class="testimonial-slider">
+            <div class="testimonial">
+                "Marie a transformé notre appartement en un lieu de vie exceptionnel. Son sens du détail et sa capacité à comprendre nos besoins ont dépassé nos attentes."
+            </div>
+            <div class="client-info">
+                <h4>Jean & Sophie Martin</h4>
+                <p>Propriétaires - Paris 16ème</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="contact-info">
+            <h2>Commençons Votre Projet</h2>
+            <p>Chaque grand projet commence par une conversation. Contactez-moi pour discuter de vos idées et voir comment je peux vous aider à les réaliser.</p>
+            <div class="contact-details">
+                <div class="contact-item">
+                    <i>📍</i>
+                    <span>12 Rue de la Paix, 75002 Paris</span>
+                </div>
+                <div class="contact-item">
+                    <i>📞</i>
+                    <span>+33 1 42 60 35 00</span>
+                </div>
+                <div class="contact-item">
+                    <i>✉️</i>
+                    <span>contact@marielefebvre.fr</span>
+                </div>
+            </div>
+        </div>
+        <form class="contact-form">
+            <div class="form-group">
+                <input type="text" placeholder="Votre Nom" required>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="Votre Email" required>
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Sujet">
+            </div>
+            <div class="form-group">
+                <textarea placeholder="Votre Message" required></textarea>
+            </div>
+            <button type="submit" class="btn">Envoyer le Message</button>
+        </form>
+    </section>
+
+    <footer>
+        <div class="social-links">
+            <a href="#">Instagram</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Pinterest</a>
+        </div>
+        <p> 2024 Marie Lefebvre - Architecte d'Intérieur. Tous droits réservés.</p>
+    </footer>
+
+</body>
+</html>
